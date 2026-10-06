@@ -122,8 +122,14 @@
 						"referenceName": "DS_AzureSQL_Customer_Staging",
 						"type": "DatasetReference",
 						"parameters": {
-							"pSchema": "dbo",
-							"pTable": "customer_staging"
+							"pSchema": {
+								"value": "@pipeline().globalParameters.gp_target_schema",
+								"type": "Expression"
+							},
+							"pTable": {
+								"value": "@pipeline().globalParameters.gp_target_table",
+								"type": "Expression"
+							}
 						}
 					}
 				]
