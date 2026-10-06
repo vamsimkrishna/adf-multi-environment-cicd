@@ -1,0 +1,6 @@
+customer_id,customer_name,email,city,segment
+C001,Ravi Kumar,ravi.kumar@example.com,Singapore,Retail
+C002,Lakshmi Devi,lakshmi.devi@example.com,Jurong,Premium
+C003,Suresh Rao,suresh.rao@example.com,Tampines,Corporate
+C004,Anitha Rao,anitha.rao@example.com,Woodlands,Retail
+C005,Kiran Sharma,kiran.sharma@example.com,Clementi,Premium
