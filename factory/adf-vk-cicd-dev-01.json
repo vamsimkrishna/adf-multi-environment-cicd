@@ -1,0 +1,41 @@
+{
+	"name": "adf-vk-cicd-dev-01",
+	"properties": {
+		"globalParameters": {
+			"gp_environment": {
+				"type": "string",
+				"value": "DEV"
+			},
+			"gp_container": {
+				"type": "string",
+				"value": "adf-data"
+			},
+			"gp_landing_folder": {
+				"type": "string",
+				"value": "landing/customers"
+			},
+			"gp_target_schema": {
+				"type": "string",
+				"value": "dbo"
+			},
+			"gp_target_table": {
+				"type": "string",
+				"value": "customer_staging"
+			},
+			"gp_customer_file_name": {
+				"type": "string",
+				"value": "customers_dev.csv"
+			}
+		},
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "b72abc4c-d7a1-4a3d-9f4c-02615ac6c4b9",
+		"tenantId": "05d0bce9-cb1a-4716-8473-5b93ed6487b1"
+	}
+}

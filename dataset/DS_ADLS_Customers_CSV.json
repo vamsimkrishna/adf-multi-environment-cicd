@@ -1,0 +1,48 @@
+{
+	"name": "DS_ADLS_Customers_CSV",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ADLS_CICD",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"pContainer": {
+				"type": "string",
+				"defaultValue": "adf-data"
+			},
+			"pFolderPath": {
+				"type": "string",
+				"defaultValue": "landing/customers"
+			},
+			"pFileName": {
+				"type": "string",
+				"defaultValue": "customers_dev.csv"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().pFileName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().pFolderPath",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().pContainer",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

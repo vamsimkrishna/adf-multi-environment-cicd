@@ -1,0 +1,15 @@
+{
+	"name": "LS_AZSQL_CICD",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "sql-vk-cicd-dev-01.database.windows.net",
+			"database": "sqldb-adf-cicd-dev",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "SystemAssignedManagedIdentity"
+		}
+	}
+}
