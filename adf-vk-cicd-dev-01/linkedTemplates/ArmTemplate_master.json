@@ -7,50 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-vk-cicd-dev-01"
 		},
-		"AzureDataLakeStorage1_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
-		},
-		"AzureSqlDatabase1_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'AzureSqlDatabase1'"
-		},
-		"param_sqldb_ls_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'param_sqldb_ls'"
-		},
-		"AzureDataLakeStorage1_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://vamsi1adls.dfs.core.windows.net/"
-		},
-		"AzureKeyVault1_properties_typeProperties_baseUrl": {
-			"type": "string",
-			"defaultValue": "https://Keyvault1vk.vault.azure.net/"
-		},
-		"AzureSqlDatabase1_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "vamsi1sqlsrvr.database.windows.net"
-		},
-		"AzureSqlDatabase1_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "vamsi1sqldb1 "
-		},
-		"AzureSqlDatabase1_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "srvradmin"
-		},
-		"AzureSqlDatabaseKV_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "vamsi1sqlsrvr.database.windows.net"
-		},
-		"AzureSqlDatabaseKV_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "vamsi1sqldb1"
-		},
-		"AzureSqlDatabaseKV_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "srvradmin"
-		},
 		"LS_ADLS_CICD_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://stvkadfcicddev01.dfs.core.windows.net/"
@@ -62,18 +18,6 @@
 		"LS_AZSQL_CICD_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "sqldb-adf-cicd-dev"
-		},
-		"param_sqldb_ls_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "vamsi1sqlsrvr.database.windows.net"
-		},
-		"param_sqldb_ls_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "@{linkedService().dbname}"
-		},
-		"param_sqldb_ls_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "srvradmin"
 		},
 		"default_properties_gp_environment_value": {
 			"type": "string",
@@ -126,15 +70,6 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"AzureDataLakeStorage1_accountKey": {
-						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
-					},
-					"AzureSqlDatabase1_password": {
-						"value": "[parameters('AzureSqlDatabase1_password')]"
-					},
-					"param_sqldb_ls_password": {
-						"value": "[parameters('param_sqldb_ls_password')]"
-					},
 					"default_properties_gp_environment_value": {
 						"value": "[parameters('default_properties_gp_environment_value')]"
 					},
@@ -153,21 +88,6 @@
 					"default_properties_gp_customer_file_name_value": {
 						"value": "[parameters('default_properties_gp_customer_file_name_value')]"
 					},
-					"AzureDataLakeStorage1_properties_typeProperties_url": {
-						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
-					},
-					"AzureKeyVault1_properties_typeProperties_baseUrl": {
-						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
-					},
-					"AzureSqlDatabase1_properties_typeProperties_server": {
-						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_server')]"
-					},
-					"AzureSqlDatabase1_properties_typeProperties_database": {
-						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_database')]"
-					},
-					"AzureSqlDatabase1_properties_typeProperties_userName": {
-						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_userName')]"
-					},
 					"LS_ADLS_CICD_properties_typeProperties_url": {
 						"value": "[parameters('LS_ADLS_CICD_properties_typeProperties_url')]"
 					},
@@ -176,24 +96,6 @@
 					},
 					"LS_AZSQL_CICD_properties_typeProperties_database": {
 						"value": "[parameters('LS_AZSQL_CICD_properties_typeProperties_database')]"
-					},
-					"param_sqldb_ls_properties_typeProperties_server": {
-						"value": "[parameters('param_sqldb_ls_properties_typeProperties_server')]"
-					},
-					"param_sqldb_ls_properties_typeProperties_database": {
-						"value": "[parameters('param_sqldb_ls_properties_typeProperties_database')]"
-					},
-					"param_sqldb_ls_properties_typeProperties_userName": {
-						"value": "[parameters('param_sqldb_ls_properties_typeProperties_userName')]"
-					},
-					"AzureSqlDatabaseKV_properties_typeProperties_server": {
-						"value": "[parameters('AzureSqlDatabaseKV_properties_typeProperties_server')]"
-					},
-					"AzureSqlDatabaseKV_properties_typeProperties_database": {
-						"value": "[parameters('AzureSqlDatabaseKV_properties_typeProperties_database')]"
-					},
-					"AzureSqlDatabaseKV_properties_typeProperties_userName": {
-						"value": "[parameters('AzureSqlDatabaseKV_properties_typeProperties_userName')]"
 					}
 				}
 			},

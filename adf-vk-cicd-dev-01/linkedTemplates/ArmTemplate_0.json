@@ -7,18 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-vk-cicd-dev-01"
 		},
-		"AzureDataLakeStorage1_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
-		},
-		"AzureSqlDatabase1_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'AzureSqlDatabase1'"
-		},
-		"param_sqldb_ls_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'param_sqldb_ls'"
-		},
 		"default_properties_gp_environment_value": {
 			"type": "string",
 			"defaultValue": "DEV"
@@ -43,26 +31,6 @@
 			"type": "string",
 			"defaultValue": "customers_dev.csv"
 		},
-		"AzureDataLakeStorage1_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://vamsi1adls.dfs.core.windows.net/"
-		},
-		"AzureKeyVault1_properties_typeProperties_baseUrl": {
-			"type": "string",
-			"defaultValue": "https://Keyvault1vk.vault.azure.net/"
-		},
-		"AzureSqlDatabase1_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "vamsi1sqlsrvr.database.windows.net"
-		},
-		"AzureSqlDatabase1_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "vamsi1sqldb1 "
-		},
-		"AzureSqlDatabase1_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "srvradmin"
-		},
 		"LS_ADLS_CICD_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://stvkadfcicddev01.dfs.core.windows.net/"
@@ -74,30 +42,6 @@
 		"LS_AZSQL_CICD_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "sqldb-adf-cicd-dev"
-		},
-		"param_sqldb_ls_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "vamsi1sqlsrvr.database.windows.net"
-		},
-		"param_sqldb_ls_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "@{linkedService().dbname}"
-		},
-		"param_sqldb_ls_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "srvradmin"
-		},
-		"AzureSqlDatabaseKV_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "vamsi1sqlsrvr.database.windows.net"
-		},
-		"AzureSqlDatabaseKV_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "vamsi1sqldb1"
-		},
-		"AzureSqlDatabaseKV_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "srvradmin"
 		}
 	},
 	"variables": {
@@ -137,58 +81,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureKeyVault1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureKeyVault",
-				"typeProperties": {
-					"baseUrl": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('AzureSqlDatabase1_properties_typeProperties_server')]",
-					"database": "[parameters('AzureSqlDatabase1_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "SQL",
-					"userName": "[parameters('AzureSqlDatabase1_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('AzureSqlDatabase1_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/LS_ADLS_CICD')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -215,43 +107,6 @@
 					"trustServerCertificate": false,
 					"authenticationType": "SystemAssignedManagedIdentity"
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/param_sqldb_ls')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"parameters": {
-					"dbname": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('param_sqldb_ls_properties_typeProperties_server')]",
-					"database": "[parameters('param_sqldb_ls_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "SQL",
-					"userName": "[parameters('param_sqldb_ls_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('param_sqldb_ls_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/integrationRuntimevamsi')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {}
 			},
 			"dependsOn": []
 		},
@@ -385,34 +240,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LS_AZSQL_CICD')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabaseKV')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('AzureSqlDatabaseKV_properties_typeProperties_server')]",
-					"database": "[parameters('AzureSqlDatabaseKV_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "SQL",
-					"userName": "[parameters('AzureSqlDatabaseKV_properties_typeProperties_userName')]",
-					"password": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "AzureKeyVault1",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "SQLdb1pwd"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault1')]"
 			]
 		},
 		{

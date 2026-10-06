@@ -5,39 +5,6 @@
 		"factoryName": {
 			"value": "adf-vk-cicd-dev-01"
 		},
-		"AzureDataLakeStorage1_accountKey": {
-			"value": ""
-		},
-		"AzureSqlDatabase1_password": {
-			"value": ""
-		},
-		"param_sqldb_ls_password": {
-			"value": ""
-		},
-		"AzureDataLakeStorage1_properties_typeProperties_url": {
-			"value": "https://vamsi1adls.dfs.core.windows.net/"
-		},
-		"AzureKeyVault1_properties_typeProperties_baseUrl": {
-			"value": "https://Keyvault1vk.vault.azure.net/"
-		},
-		"AzureSqlDatabase1_properties_typeProperties_server": {
-			"value": "vamsi1sqlsrvr.database.windows.net"
-		},
-		"AzureSqlDatabase1_properties_typeProperties_database": {
-			"value": "vamsi1sqldb1 "
-		},
-		"AzureSqlDatabase1_properties_typeProperties_userName": {
-			"value": "srvradmin"
-		},
-		"AzureSqlDatabaseKV_properties_typeProperties_server": {
-			"value": "vamsi1sqlsrvr.database.windows.net"
-		},
-		"AzureSqlDatabaseKV_properties_typeProperties_database": {
-			"value": "vamsi1sqldb1"
-		},
-		"AzureSqlDatabaseKV_properties_typeProperties_userName": {
-			"value": "srvradmin"
-		},
 		"LS_ADLS_CICD_properties_typeProperties_url": {
 			"value": "https://stvkadfcicddev01.dfs.core.windows.net/"
 		},
@@ -46,15 +13,6 @@
 		},
 		"LS_AZSQL_CICD_properties_typeProperties_database": {
 			"value": "sqldb-adf-cicd-dev"
-		},
-		"param_sqldb_ls_properties_typeProperties_server": {
-			"value": "vamsi1sqlsrvr.database.windows.net"
-		},
-		"param_sqldb_ls_properties_typeProperties_database": {
-			"value": "@{linkedService().dbname}"
-		},
-		"param_sqldb_ls_properties_typeProperties_userName": {
-			"value": "srvradmin"
 		},
 		"default_properties_gp_environment_value": {
 			"value": "DEV"
