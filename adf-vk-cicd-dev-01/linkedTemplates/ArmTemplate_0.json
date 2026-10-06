@@ -1,0 +1,608 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-vk-cicd-dev-01"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
+		"AzureSqlDatabase1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AzureSqlDatabase1'"
+		},
+		"param_sqldb_ls_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'param_sqldb_ls'"
+		},
+		"default_properties_gp_environment_value": {
+			"type": "string",
+			"defaultValue": "DEV"
+		},
+		"default_properties_gp_container_value": {
+			"type": "string",
+			"defaultValue": "adf-data"
+		},
+		"default_properties_gp_landing_folder_value": {
+			"type": "string",
+			"defaultValue": "landing/customers"
+		},
+		"default_properties_gp_target_schema_value": {
+			"type": "string",
+			"defaultValue": "dbo"
+		},
+		"default_properties_gp_target_table_value": {
+			"type": "string",
+			"defaultValue": "customer_staging"
+		},
+		"default_properties_gp_customer_file_name_value": {
+			"type": "string",
+			"defaultValue": "customers_dev.csv"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://vamsi1adls.dfs.core.windows.net/"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://Keyvault1vk.vault.azure.net/"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "vamsi1sqlsrvr.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "vamsi1sqldb1 "
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "srvradmin"
+		},
+		"LS_ADLS_CICD_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://stvkadfcicddev01.dfs.core.windows.net/"
+		},
+		"LS_AZSQL_CICD_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sql-vk-cicd-dev-01.database.windows.net"
+		},
+		"LS_AZSQL_CICD_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "sqldb-adf-cicd-dev"
+		},
+		"param_sqldb_ls_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "vamsi1sqlsrvr.database.windows.net"
+		},
+		"param_sqldb_ls_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "@{linkedService().dbname}"
+		},
+		"param_sqldb_ls_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "srvradmin"
+		},
+		"File Arrival Trigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/dbe4b184-0041-4d0e-88c9-2f0c77a8d421/resourceGroups/Vamsi1rg/providers/Microsoft.Storage/storageAccounts/vamsi1adls"
+		},
+		"AzureSqlDatabaseKV_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "vamsi1sqlsrvr.database.windows.net"
+		},
+		"AzureSqlDatabaseKV_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "vamsi1sqldb1"
+		},
+		"AzureSqlDatabaseKV_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "srvradmin"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/globalparameters",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"gp_environment": {
+					"type": "string",
+					"value": "[parameters('default_properties_gp_environment_value')]"
+				},
+				"gp_container": {
+					"type": "string",
+					"value": "[parameters('default_properties_gp_container_value')]"
+				},
+				"gp_landing_folder": {
+					"type": "string",
+					"value": "[parameters('default_properties_gp_landing_folder_value')]"
+				},
+				"gp_target_schema": {
+					"type": "string",
+					"value": "[parameters('default_properties_gp_target_schema_value')]"
+				},
+				"gp_target_table": {
+					"type": "string",
+					"value": "[parameters('default_properties_gp_target_table_value')]"
+				},
+				"gp_customer_file_name": {
+					"type": "string",
+					"value": "[parameters('default_properties_gp_customer_file_name_value')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureKeyVault1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('AzureSqlDatabase1_properties_typeProperties_server')]",
+					"database": "[parameters('AzureSqlDatabase1_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('AzureSqlDatabase1_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('AzureSqlDatabase1_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_ADLS_CICD')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('LS_ADLS_CICD_properties_typeProperties_url')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_AZSQL_CICD')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('LS_AZSQL_CICD_properties_typeProperties_server')]",
+					"database": "[parameters('LS_AZSQL_CICD_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SystemAssignedManagedIdentity"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/param_sqldb_ls')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"dbname": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('param_sqldb_ls_properties_typeProperties_server')]",
+					"database": "[parameters('param_sqldb_ls_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('param_sqldb_ls_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('param_sqldb_ls_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/File Arrival Trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/silver/blobs/target",
+					"blobPathEndsWith": ".json",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('File Arrival Trigger_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 3,
+						"startTime": "2026-09-13T11:41:00",
+						"timeZone": "Singapore Standard Time"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntimevamsi')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ADLS_Customers_CSV')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ADLS_CICD",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"pContainer": {
+						"type": "string",
+						"defaultValue": "adf-data"
+					},
+					"pFolderPath": {
+						"type": "string",
+						"defaultValue": "landing/customers"
+					},
+					"pFileName": {
+						"type": "string",
+						"defaultValue": "customers_dev.csv"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().pFileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().pFolderPath",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().pContainer",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ADLS_CICD')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_AzureSQL_Customer_Staging')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AZSQL_CICD",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"pSchema": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"pTable": {
+						"type": "string",
+						"defaultValue": "customer_staging"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "load_id",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "customer_id",
+						"type": "varchar"
+					},
+					{
+						"name": "customer_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "email",
+						"type": "nvarchar"
+					},
+					{
+						"name": "city",
+						"type": "nvarchar"
+					},
+					{
+						"name": "segment",
+						"type": "nvarchar"
+					},
+					{
+						"name": "environment_name",
+						"type": "varchar"
+					},
+					{
+						"name": "source_file",
+						"type": "nvarchar"
+					},
+					{
+						"name": "pipeline_run_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "load_timestamp",
+						"type": "datetime2",
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().pSchema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().pTable",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_AZSQL_CICD')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabaseKV')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('AzureSqlDatabaseKV_properties_typeProperties_server')]",
+					"database": "[parameters('AzureSqlDatabaseKV_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('AzureSqlDatabaseKV_properties_typeProperties_userName')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "AzureKeyVault1",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "SQLdb1pwd"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_Load_Customer_Staging')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy_CSV_To_Staging",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": {
+									"value": "DELETE FROM dbo.customer_staging;",
+									"type": "Expression"
+								},
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "customer_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "customer_id"
+										}
+									},
+									{
+										"source": {
+											"name": "customer_name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "customer_name"
+										}
+									},
+									{
+										"source": {
+											"name": "email",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "email"
+										}
+									},
+									{
+										"source": {
+											"name": "city",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "city"
+										}
+									},
+									{
+										"source": {
+											"name": "segment",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "segment"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_ADLS_Customers_CSV",
+								"type": "DatasetReference",
+								"parameters": {
+									"pContainer": {
+										"value": "@pipeline().globalParameters.gp_container",
+										"type": "Expression"
+									},
+									"pFolderPath": {
+										"value": "@pipeline().globalParameters.gp_landing_folder",
+										"type": "Expression"
+									},
+									"pFileName": {
+										"value": "@pipeline().globalParameters.gp_customer_file_name",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_AzureSQL_Customer_Staging",
+								"type": "DatasetReference",
+								"parameters": {
+									"pSchema": "dbo",
+									"pTable": "customer_staging"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-10-06T14:51:03Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_ADLS_Customers_CSV')]",
+				"[concat(variables('factoryId'), '/datasets/DS_AzureSQL_Customer_Staging')]"
+			]
+		}
+	]
+}

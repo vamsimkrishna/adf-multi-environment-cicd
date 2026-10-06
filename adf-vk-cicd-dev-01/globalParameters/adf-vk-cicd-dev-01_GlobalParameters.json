@@ -1,0 +1,26 @@
+{
+	"gp_environment": {
+		"type": "string",
+		"value": "DEV"
+	},
+	"gp_container": {
+		"type": "string",
+		"value": "adf-data"
+	},
+	"gp_landing_folder": {
+		"type": "string",
+		"value": "landing/customers"
+	},
+	"gp_target_schema": {
+		"type": "string",
+		"value": "dbo"
+	},
+	"gp_target_table": {
+		"type": "string",
+		"value": "customer_staging"
+	},
+	"gp_customer_file_name": {
+		"type": "string",
+		"value": "customers_dev.csv"
+	}
+}
