@@ -56,9 +56,6 @@
 		"param_sqldb_ls_properties_typeProperties_userName": {
 			"value": "srvradmin"
 		},
-		"File Arrival Trigger_properties_typeProperties_scope": {
-			"value": "/subscriptions/dbe4b184-0041-4d0e-88c9-2f0c77a8d421/resourceGroups/Vamsi1rg/providers/Microsoft.Storage/storageAccounts/vamsi1adls"
-		},
 		"default_properties_gp_environment_value": {
 			"value": "DEV"
 		},

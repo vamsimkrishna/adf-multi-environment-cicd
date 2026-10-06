@@ -87,10 +87,6 @@
 			"type": "string",
 			"defaultValue": "srvradmin"
 		},
-		"File Arrival Trigger_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/dbe4b184-0041-4d0e-88c9-2f0c77a8d421/resourceGroups/Vamsi1rg/providers/Microsoft.Storage/storageAccounts/vamsi1adls"
-		},
 		"AzureSqlDatabaseKV_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "vamsi1sqlsrvr.database.windows.net"
@@ -244,47 +240,6 @@
 					"password": {
 						"type": "SecureString",
 						"value": "[parameters('param_sqldb_ls_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/File Arrival Trigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [],
-				"type": "BlobEventsTrigger",
-				"typeProperties": {
-					"blobPathBeginsWith": "/silver/blobs/target",
-					"blobPathEndsWith": ".json",
-					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('File Arrival Trigger_properties_typeProperties_scope')]",
-					"events": [
-						"Microsoft.Storage.BlobCreated"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/trigger1')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 3,
-						"startTime": "2026-09-13T11:41:00",
-						"timeZone": "Singapore Standard Time"
 					}
 				}
 			},
