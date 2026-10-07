@@ -32,9 +32,9 @@ jobs:
           scope: resourcegroup
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ vars.AZURE_RESOURCE_GROUP }}
-          template: ./ARMTemplateForFactory.json
+          template: ./adf-vk-cicd-dev-01/ARMTemplateForFactory.json
           parameters: >
-            ./ARMTemplateParametersForFactory.json
+            ./adf-vk-cicd-dev-01/ARMTemplateParametersForFactory.json
             factoryName=${{ vars.ADF_FACTORY_NAME }}
             LS_ADLS_CICD_properties_typeProperties_url=${{ vars.ADLS_URL }}
             LS_AZSQL_CICD_properties_typeProperties_server=${{ vars.SQL_SERVER }}
@@ -73,9 +73,9 @@ jobs:
           scope: resourcegroup
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ vars.AZURE_RESOURCE_GROUP }}
-          template: ./ARMTemplateForFactory.json
+          template: ./adf-vk-cicd-dev-01/ARMTemplateForFactory.json
           parameters: >
-            ./ARMTemplateParametersForFactory.json
+            ./adf-vk-cicd-dev-01/ARMTemplateParametersForFactory.json
             factoryName=${{ vars.ADF_FACTORY_NAME }}
             LS_ADLS_CICD_properties_typeProperties_url=${{ vars.ADLS_URL }}
             LS_AZSQL_CICD_properties_typeProperties_server=${{ vars.SQL_SERVER }}
