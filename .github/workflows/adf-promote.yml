@@ -1,0 +1,90 @@
+name: Promote ADF to Test and Production
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-test:
+    name: Deploy ADF to TEST
+    runs-on: ubuntu-latest
+    environment: test
+
+    steps:
+      - name: Checkout published ADF artifact
+        uses: actions/checkout@v4
+        with:
+          ref: adf_publish
+
+      - name: Login to Azure using OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy ARM template to TEST
+        uses: azure/arm-deploy@v2
+        with:
+          scope: resourcegroup
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ vars.AZURE_RESOURCE_GROUP }}
+          template: ./ARMTemplateForFactory.json
+          parameters: >
+            ./ARMTemplateParametersForFactory.json
+            factoryName=${{ vars.ADF_FACTORY_NAME }}
+            LS_ADLS_CICD_properties_typeProperties_url=${{ vars.ADLS_URL }}
+            LS_AZSQL_CICD_properties_typeProperties_server=${{ vars.SQL_SERVER }}
+            LS_AZSQL_CICD_properties_typeProperties_database=${{ vars.SQL_DATABASE }}
+            default_properties_gp_environment_value=${{ vars.ADF_ENVIRONMENT }}
+            default_properties_gp_container_value=adf-data
+            default_properties_gp_landing_folder_value=landing/customers
+            default_properties_gp_target_schema_value=dbo
+            default_properties_gp_target_table_value=customer_staging
+            default_properties_gp_customer_file_name_value=${{ vars.CUSTOMER_FILE_NAME }}
+          deploymentMode: Incremental
+          deploymentName: adf-test-${{ github.run_number }}
+
+  deploy-production:
+    name: Deploy ADF to PROD
+    needs: deploy-test
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout the same published ADF artifact
+        uses: actions/checkout@v4
+        with:
+          ref: adf_publish
+
+      - name: Login to Azure using OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy ARM template to PROD
+        uses: azure/arm-deploy@v2
+        with:
+          scope: resourcegroup
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ vars.AZURE_RESOURCE_GROUP }}
+          template: ./ARMTemplateForFactory.json
+          parameters: >
+            ./ARMTemplateParametersForFactory.json
+            factoryName=${{ vars.ADF_FACTORY_NAME }}
+            LS_ADLS_CICD_properties_typeProperties_url=${{ vars.ADLS_URL }}
+            LS_AZSQL_CICD_properties_typeProperties_server=${{ vars.SQL_SERVER }}
+            LS_AZSQL_CICD_properties_typeProperties_database=${{ vars.SQL_DATABASE }}
+            default_properties_gp_environment_value=${{ vars.ADF_ENVIRONMENT }}
+            default_properties_gp_container_value=adf-data
+            default_properties_gp_landing_folder_value=landing/customers
+            default_properties_gp_target_schema_value=dbo
+            default_properties_gp_target_table_value=customer_staging
+            default_properties_gp_customer_file_name_value=${{ vars.CUSTOMER_FILE_NAME }}
+          deploymentMode: Incremental
+          deploymentName: adf-prod-${{ github.run_number }}
