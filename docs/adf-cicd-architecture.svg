@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1040" viewBox="0 0 1600 1040" role="img" aria-labelledby="title desc">
+  <title id="title">Azure Data Factory multi-environment CI/CD architecture</title>
+  <desc id="desc">Architecture showing DEV authoring and publishing, GitHub Actions OIDC authentication through Microsoft Entra ID, deployment to TEST and PROD with an approval gate, and separate ADF managed identities accessing ADLS and Azure SQL.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f7f9fc}.panel{fill:#fff;stroke:#cbd5e1;stroke-width:2}.header{font:700 30px Arial,sans-serif;fill:#0f172a}.sub{font:400 16px Arial,sans-serif;fill:#475569}.section{font:700 20px Arial,sans-serif;fill:#0f172a}.node-title{font:700 17px Arial,sans-serif;fill:#0f172a}.node-sub{font:400 13px Arial,sans-serif;fill:#475569}.node{fill:#fff;stroke:#94a3b8;stroke-width:2}.dev{fill:#eff6ff;stroke:#3b82f6}.github{fill:#f8fafc;stroke:#334155}.entra{fill:#faf5ff;stroke:#8b5cf6}.test{fill:#ecfeff;stroke:#0891b2}.prod{fill:#f0fdf4;stroke:#16a34a}.gate{fill:#fff7ed;stroke:#f97316}.data{fill:#f8fafc;stroke:#64748b}.arrow{fill:none;stroke:#2563eb;stroke-width:4;marker-end:url(#blueArrow)}.oidc{fill:none;stroke:#7c3aed;stroke-width:4;stroke-dasharray:10 8;marker-end:url(#purpleArrow)}.runtime{fill:none;stroke:#16a34a;stroke-width:4;marker-end:url(#greenArrow)}.approval{fill:none;stroke:#f97316;stroke-width:4;marker-end:url(#orangeArrow)}.label{font:700 13px Arial,sans-serif;fill:#334155}.legend{font:400 13px Arial,sans-serif;fill:#334155}
+    </style>
+    <marker id="blueArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#2563eb"/></marker>
+    <marker id="purpleArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#7c3aed"/></marker>
+    <marker id="greenArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#16a34a"/></marker>
+    <marker id="orangeArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#f97316"/></marker>
+  </defs>
+  <rect class="bg" width="1600" height="1040"/>
+  <text class="header" x="60" y="55">Azure Data Factory Multi-Environment CI/CD</text>
+  <text class="sub" x="60" y="84">Deployment authentication and runtime data-access cycle</text>
+
+  <rect class="panel" x="45" y="115" width="1510" height="560" rx="18"/>
+  <text class="section" x="75" y="152">1. Source control, token authorization and deployment</text>
+
+  <rect class="node dev" x="75" y="215" width="230" height="105" rx="14"/>
+  <text class="node-title" x="190" y="253" text-anchor="middle">DEV Data Factory</text>
+  <text class="node-sub" x="190" y="280" text-anchor="middle">Author and publish</text>
+  <text class="node-sub" x="190" y="301" text-anchor="middle">adf-vk-cicd-dev-01</text>
+
+  <rect class="node github" x="375" y="190" width="245" height="80" rx="14"/>
+  <text class="node-title" x="497" y="225" text-anchor="middle">GitHub main</text>
+  <text class="node-sub" x="497" y="249" text-anchor="middle">ADF source-controlled JSON</text>
+
+  <rect class="node github" x="375" y="300" width="245" height="95" rx="14"/>
+  <text class="node-title" x="497" y="334" text-anchor="middle">adf_publish</text>
+  <text class="node-sub" x="497" y="359" text-anchor="middle">ARM template + parameters</text>
+  <text class="node-sub" x="497" y="380" text-anchor="middle">Immutable deployment artifact</text>
+
+  <rect class="node github" x="695" y="245" width="245" height="105" rx="14"/>
+  <text class="node-title" x="817" y="282" text-anchor="middle">GitHub Actions</text>
+  <text class="node-sub" x="817" y="307" text-anchor="middle">adf-promote.yml</text>
+  <text class="node-sub" x="817" y="328" text-anchor="middle">id-token: write</text>
+
+  <rect class="node entra" x="695" y="435" width="245" height="120" rx="14"/>
+  <text class="node-title" x="817" y="470" text-anchor="middle">Microsoft Entra ID</text>
+  <text class="node-sub" x="817" y="496" text-anchor="middle">sp-github-adf-cicd</text>
+  <text class="node-sub" x="817" y="517" text-anchor="middle">Federated credentials:</text>
+  <text class="node-sub" x="817" y="538" text-anchor="middle">test and prod environments</text>
+
+  <rect class="node test" x="1015" y="190" width="230" height="105" rx="14"/>
+  <text class="node-title" x="1130" y="228" text-anchor="middle">TEST Data Factory</text>
+  <text class="node-sub" x="1130" y="254" text-anchor="middle">TEST parameters</text>
+  <text class="node-sub" x="1130" y="275" text-anchor="middle">Validate deployment</text>
+
+  <rect class="node gate" x="1015" y="340" width="230" height="90" rx="14"/>
+  <text class="node-title" x="1130" y="375" text-anchor="middle">PROD Approval Gate</text>
+  <text class="node-sub" x="1130" y="402" text-anchor="middle">GitHub environment: prod</text>
+
+  <rect class="node prod" x="1320" y="340" width="200" height="105" rx="14"/>
+  <text class="node-title" x="1420" y="378" text-anchor="middle">PROD Data Factory</text>
+  <text class="node-sub" x="1420" y="404" text-anchor="middle">Same ARM artifact</text>
+  <text class="node-sub" x="1420" y="425" text-anchor="middle">PROD parameters</text>
+
+  <path class="arrow" d="M305 240 H365"/><text class="label" x="335" y="224" text-anchor="middle">Save</text>
+  <path class="arrow" d="M305 290 C330 290 342 347 365 347"/><text class="label" x="330" y="337" text-anchor="middle">Publish</text>
+  <path class="arrow" d="M620 347 H680"/><text class="label" x="650" y="332" text-anchor="middle">Checkout</text>
+  <path class="oidc" d="M817 350 V420"/><text class="label" x="840" y="393">OIDC token</text>
+  <path class="oidc" d="M940 495 C985 495 980 245 1005 245"/><text class="label" x="986" y="474" text-anchor="middle">RBAC: TEST RG</text>
+  <path class="oidc" d="M940 525 C1100 615 1420 600 1420 455"/><text class="label" x="1190" y="594" text-anchor="middle">Contributor RBAC: PROD RG</text>
+  <path class="arrow" d="M940 280 H1005"/><text class="label" x="972" y="264" text-anchor="middle">Deploy</text>
+  <path class="approval" d="M1130 295 V330"/><text class="label" x="1150" y="319">Validate</text>
+  <path class="approval" d="M1245 385 H1310"/><text class="label" x="1278" y="369" text-anchor="middle">Approve</text>
+
+  <rect class="panel" x="45" y="705" width="1510" height="275" rx="18"/>
+  <text class="section" x="75" y="744">2. Runtime data access — separate system-assigned managed identities</text>
+
+  <rect class="node test" x="115" y="790" width="250" height="95" rx="14"/>
+  <text class="node-title" x="240" y="826" text-anchor="middle">TEST ADF SAMI</text>
+  <text class="node-sub" x="240" y="852" text-anchor="middle">Runtime identity</text>
+  <text class="node-sub" x="240" y="873" text-anchor="middle">No stored password</text>
+
+  <rect class="node data" x="470" y="765" width="230" height="80" rx="14"/>
+  <text class="node-title" x="585" y="800" text-anchor="middle">TEST ADLS Gen2</text>
+  <text class="node-sub" x="585" y="824" text-anchor="middle">Source customer CSV</text>
+  <rect class="node data" x="470" y="865" width="230" height="80" rx="14"/>
+  <text class="node-title" x="585" y="900" text-anchor="middle">TEST Azure SQL</text>
+  <text class="node-sub" x="585" y="924" text-anchor="middle">customer_staging</text>
+
+  <rect class="node prod" x="880" y="790" width="250" height="95" rx="14"/>
+  <text class="node-title" x="1005" y="826" text-anchor="middle">PROD ADF SAMI</text>
+  <text class="node-sub" x="1005" y="852" text-anchor="middle">Runtime identity</text>
+  <text class="node-sub" x="1005" y="873" text-anchor="middle">No stored password</text>
+
+  <rect class="node data" x="1235" y="765" width="230" height="80" rx="14"/>
+  <text class="node-title" x="1350" y="800" text-anchor="middle">PROD ADLS Gen2</text>
+  <text class="node-sub" x="1350" y="824" text-anchor="middle">Source customer CSV</text>
+  <rect class="node data" x="1235" y="865" width="230" height="80" rx="14"/>
+  <text class="node-title" x="1350" y="900" text-anchor="middle">PROD Azure SQL</text>
+  <text class="node-sub" x="1350" y="924" text-anchor="middle">customer_staging</text>
+
+  <path class="runtime" d="M365 820 C410 820 420 805 460 805"/><path class="runtime" d="M365 855 C410 855 420 905 460 905"/>
+  <path class="runtime" d="M1130 820 C1175 820 1185 805 1225 805"/><path class="runtime" d="M1130 855 C1175 855 1185 905 1225 905"/>
+
+  <line x1="85" y1="1005" x2="125" y2="1005" stroke="#2563eb" stroke-width="4"/><text class="legend" x="135" y="1010">ARM deployment path</text>
+  <line x1="330" y1="1005" x2="370" y2="1005" stroke="#7c3aed" stroke-width="4" stroke-dasharray="10 8"/><text class="legend" x="380" y="1010">OIDC trust and RBAC</text>
+  <line x1="590" y1="1005" x2="630" y2="1005" stroke="#16a34a" stroke-width="4"/><text class="legend" x="640" y="1010">ADF managed-identity data access</text>
+  <line x1="940" y1="1005" x2="980" y2="1005" stroke="#f97316" stroke-width="4"/><text class="legend" x="990" y="1010">Validation and approval</text>
+</svg>
