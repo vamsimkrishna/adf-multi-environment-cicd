@@ -52,7 +52,7 @@ jobs:
     name: Deploy ADF to PROD
     needs: deploy-test
     runs-on: ubuntu-latest
-    environment: production
+    environment: prod
 
     steps:
       - name: Checkout the same published ADF artifact
